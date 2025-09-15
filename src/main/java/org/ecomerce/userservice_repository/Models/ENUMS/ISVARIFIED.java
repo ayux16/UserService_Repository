@@ -1,4 +1,4 @@
-package org.ecomerce.Models.ENUMS;
+package org.ecomerce.userservice_repository.Models.ENUMS;
 
 public enum ISVARIFIED {
     VERIFIED,
