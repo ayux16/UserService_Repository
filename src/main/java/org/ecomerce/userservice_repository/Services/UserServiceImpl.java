@@ -1,12 +1,17 @@
 package org.ecomerce.userservice_repository.Services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.kafka.common.network.Send;
+import org.ecomerce.userservice_repository.DTO.SendEmailDTO;
 import org.ecomerce.userservice_repository.EXCEPTIONS.ValidTokenNotFoundException;
 import org.ecomerce.userservice_repository.Models.ENUMS.ISVARIFIED;
 import org.ecomerce.userservice_repository.Models.Token;
 import org.ecomerce.userservice_repository.Models.User;
 import org.ecomerce.userservice_repository.Repository.UserServicRepo;
 import org.ecomerce.userservice_repository.Repository.tokenServiceRepo;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Calendar;
@@ -23,10 +28,15 @@ public class UserServiceImpl implements UserServiceInterface{
 
     private tokenServiceRepo tokenService;
 
-    private UserServiceImpl(UserServicRepo userRepository, BCryptPasswordEncoder passwordEncoder, tokenServiceRepo tokenServiceRepo) {
+    private KafkaTemplate kafkaTemplate;
+    private ObjectMapper objectMapper;
+
+    private UserServiceImpl(UserServicRepo userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder passwordEncoder, tokenServiceRepo tokenServiceRep, KafkaTemplate kafkaTemplate) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.tokenService = tokenServiceRepo;
+        this.tokenService = tokenServiceRep;
+        this.kafkaTemplate = kafkaTemplate;
+        this.objectMapper = objectMapper;
     }
     /**
      String passwordFromDb = user.getPassword();
@@ -71,7 +81,7 @@ public class UserServiceImpl implements UserServiceInterface{
     }
 
     @Override
-    public User signup(String FirstName, String LastName, String username, String Email, String Password, Integer phoneNumber) {
+    public User signup(String FirstName, String LastName, String username, String Email, String Password, Integer phoneNumber) throws JsonProcessingException {
         Optional<User> user = userRepository.findByEmail(Email);
             if(user.isPresent()) {
                 return user.get();
@@ -91,10 +101,26 @@ public class UserServiceImpl implements UserServiceInterface{
 
                    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
                  **/
-
             newUser.setPassword(passwordEncoder.encode(Password));
             newUser.setPhone_Number(phoneNumber);
             newUser.setIsvarified(ISVARIFIED.VERIFIED);
+            //publisher kafka
+        /**
+           what Things we need to send in an event ? so that notification service can process that
+                ->Name
+                ->email
+                ->subject
+                ->body
+                ->tag
+         */
+        SendEmailDTO    emailDTO = new SendEmailDTO();
+        emailDTO.setTo(newUser.getEmail());
+        emailDTO.setSubject("Welcome User->");
+        emailDTO.setBody("A-z tak sab padh dala hai na subh se bika hai aalu na hi bika hai kanda hoy hoye");
+
+        kafkaTemplate.send(
+                "sendNotification",objectMapper.writeValueAsString(emailDTO)
+        );
         return userRepository.save(newUser);
     }
 

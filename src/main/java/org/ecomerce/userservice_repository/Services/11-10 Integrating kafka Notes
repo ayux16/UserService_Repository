@@ -1,0 +1,14 @@
+after adding kafka dependency
+we need to create a publisher in service--> in signup req
+before executing return statement
+publish an event inside a kafka to send user welcome email
+
+
+how can we create a json in java ?
+create a simple obj and convert it into json while sending over the network
+        -> we created a classDTO-> with all the details
+        -> now we will create obj of this DTO and enter details
+        -> after this we will convert this obj of DTO into json obj
+{{          WE HAVE PREDEFINED LIBERARY FOR THIS        }}
+            ObjectMapper and this library comes from JACKSON
+
