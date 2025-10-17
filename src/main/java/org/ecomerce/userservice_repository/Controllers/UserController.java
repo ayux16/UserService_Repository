@@ -1,4 +1,6 @@
 package org.ecomerce.userservice_repository.Controllers;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.ecomerce.userservice_repository.DTO.*;
 import org.ecomerce.userservice_repository.EXCEPTIONS.ValidTokenNotFoundException;
 import org.ecomerce.userservice_repository.Models.Token;
@@ -7,7 +9,6 @@ import org.ecomerce.userservice_repository.Services.UserServiceInterface;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/users")
@@ -32,7 +33,7 @@ public class UserController {
     so instead of returning a user Class we created a dto with name and email and returning that
      */
     @PostMapping("/signup")
-    public UserDTO signupRequest(@RequestBody SignupRequestDTO signupRequestDTO) {
+    public UserDTO signupRequest(@RequestBody SignupRequestDTO signupRequestDTO) throws JsonProcessingException {
         User user = userService.signup(
                 signupRequestDTO.getFirstName(),
                 signupRequestDTO.getLastName(),

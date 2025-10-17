@@ -3,7 +3,6 @@ package org.ecomerce.userservice_repository.Services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.kafka.common.network.Send;
 import org.ecomerce.userservice_repository.DTO.SendEmailDTO;
 import org.ecomerce.userservice_repository.EXCEPTIONS.ValidTokenNotFoundException;
 import org.ecomerce.userservice_repository.Models.ENUMS.ISVARIFIED;
@@ -14,6 +13,7 @@ import org.ecomerce.userservice_repository.Repository.tokenServiceRepo;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -113,6 +113,7 @@ public class UserServiceImpl implements UserServiceInterface{
                 ->body
                 ->tag
          */
+
         SendEmailDTO    emailDTO = new SendEmailDTO();
         emailDTO.setTo(newUser.getEmail());
         emailDTO.setSubject("Welcome User->");
