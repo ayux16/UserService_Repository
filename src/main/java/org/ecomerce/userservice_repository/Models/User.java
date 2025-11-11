@@ -18,7 +18,7 @@ public class User extends BaseModel{
     private String password;
     private String email;
     private Integer phone_Number;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Roles> roles;
     @Enumerated(EnumType.STRING)
     private ISVARIFIED isvarified;

@@ -3,7 +3,6 @@ package org.ecomerce.userservice_repository.Services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.ecomerce.userservice_repository.DTO.SendEmailDTO;
 import org.ecomerce.userservice_repository.EXCEPTIONS.ValidTokenNotFoundException;
 import org.ecomerce.userservice_repository.Models.ENUMS.ISVARIFIED;
 import org.ecomerce.userservice_repository.Models.Token;
@@ -114,14 +113,14 @@ public class UserServiceImpl implements UserServiceInterface{
                 ->tag
          */
 
-        SendEmailDTO    emailDTO = new SendEmailDTO();
-        emailDTO.setTo(newUser.getEmail());
-        emailDTO.setSubject("Welcome User->");
-        emailDTO.setBody("A-z tak sab padh dala hai na subh se bika hai aalu na hi bika hai kanda hoy hoye");
-
-        kafkaTemplate.send(
-                "sendNotification",objectMapper.writeValueAsString(emailDTO)
-        );
+//        SendEmailDTO    emailDTO = new SendEmailDTO();
+//        emailDTO.setTo(newUser.getEmail());
+//        emailDTO.setSubject("Welcome User->");
+//        emailDTO.setBody("A-z tak sab padh dala hai na subh se bika hai aalu na hi bika hai kanda hoy hoye");
+//
+//        kafkaTemplate.send(
+//                "sendNotification",objectMapper.writeValueAsString(emailDTO)
+//        );
         return userRepository.save(newUser);
     }
 
