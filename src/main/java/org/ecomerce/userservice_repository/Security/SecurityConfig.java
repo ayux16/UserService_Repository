@@ -65,6 +65,8 @@ public class SecurityConfig {
             throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
+//                        .requestMatchers("/login").permitAll()
+//                        .requestMatchers("/signup").permitAll()
                         .anyRequest().permitAll()
                 )
                 .cors().disable()
