@@ -140,11 +140,15 @@ public class UserServiceImpl implements UserServiceInterface{
 
     @Override
     public User validateToken(String Token) {
+/** As of now we are hardcoding the token
         Optional<Token>optionalToken=tokenService.findByValueAndIsDeletedAndExpryAtGreaterThan(Token,false,new Date());
         if(optionalToken.isEmpty()) {
             throw new ValidTokenNotFoundException("Valid token not found");
         }
         Token token = optionalToken.get();
         return token.getUser();
+ **/
+        System.out.println("Calling Validate Token API");
+        return null;
     }
 }
